@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+def artifactName = "opentelemetry-sdk"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "io.opentelemetry:opentelemetry-sdk:${versions.opentelemetry}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+jar {
+    archivesBaseName = "${artifactName}"
+    archiveClassifier.set('')
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+test {
+    useJUnitPlatform()
+}

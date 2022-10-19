@@ -1,0 +1,10 @@
+plugins {
+  id "java"
+}
+
+dependencies {
+
+  // https://mvnrepository.com/artifact/io.prometheus/simpleclient
+  implementation group: 'io.prometheus', name: 'simpleclient', version: '0.16.0'
+
+}

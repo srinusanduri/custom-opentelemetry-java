@@ -1,0 +1,86 @@
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+    maven {
+      name = "sonatype"
+      url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+  }
+  dependencies {
+    classpath "com.diffplug.spotless:spotless-plugin-gradle:6.3.0"
+    classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    classpath "io.opentelemetry.instrumentation:gradle-plugins:1.18.0-alpha-SNAPSHOT"
+  }
+}
+
+allprojects {
+  project.group = "com.srinusanduri"
+  project.version = "0.0.1"
+}
+
+subprojects {
+  version = rootProject.version
+
+  apply plugin: "java"
+  apply plugin: "com.diffplug.spotless"
+
+  ext {
+    versions = [
+      // these lines are managed by .github/scripts/update-sdk-version.sh
+      opentelemetry              : "1.18.0",
+      opentelemetryAlpha         : "1.18.0-alpha",
+
+      // these lines are managed by .github/scripts/update-version.sh
+      opentelemetryJavaagent     : "1.20.0-SNAPSHOT",
+      opentelemetryJavaagentAlpha: "1.20.0-alpha-SNAPSHOT",
+
+      bytebuddy                  : "1.12.10",
+      autoservice                : "1.0.1"
+    ]
+
+    deps = [
+      bytebuddy           : "net.bytebuddy:byte-buddy-dep:${versions.bytebuddy}",
+      autoservice         : [
+              "com.google.auto.service:auto-service:${versions.autoservice}",
+              "com.google.auto.service:auto-service-annotations:${versions.autoservice}",
+      ]
+    ]
+  }
+
+  repositories {
+    mavenCentral()
+    maven {
+      name = "sonatype"
+      url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+  }
+
+  spotless {
+    enforceCheck false
+    java {
+      googleJavaFormat()
+      //licenseHeaderFile(rootProject.file("../../buildscripts/spotless.license.java"), "(package|import|public)")
+      target("src/**/*.java")
+    }
+  }
+
+  dependencies {
+    testImplementation("org.mockito:mockito-core:3.3.3")
+    testImplementation(enforcedPlatform("org.junit:junit-bom:5.9.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+  }
+
+  tasks {
+    test {
+      useJUnitPlatform()
+    }
+
+    compileJava {
+      options.release.set(8)
+    }
+  }
+}
