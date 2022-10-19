@@ -8,7 +8,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'au-opentelemetry-java'
+rootProject.name = 'custom-opentelemetry-java'
 
 include "agent"
 include "bootstrap"

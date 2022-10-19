@@ -11,7 +11,7 @@ dependencies {
 
   compileOnly("io.prometheus:simpleclient:0.16.0")
 
-  implementation("io.opentelemetry:opentelemetry-sdk-extension-jaeger-remote-sampler:${versions.opentelemetry}")
+  //implementation("io.opentelemetry:opentelemetry-sdk-extension-jaeger-remote-sampler:${versions.opentelemetry}")
 
   // https://mvnrepository.com/artifact/io.prometheus/simpleclient
   //implementation group: 'io.prometheus', name: 'simpleclient', version: '0.16.0'
